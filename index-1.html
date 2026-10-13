@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#e84335">
+<title>Cafe D'Cruse | Talegaon</title>
+<style>
+:root{--red:#e84335;--red-dark:#c93329;--ink:#242424;--muted:#707070;--cream:#fffaf5;--line:#eee5df;--green:#16834a}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#fff;color:var(--ink);font-family:Inter,Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{background:#201b19;color:#fff;text-align:center;padding:8px 12px;font-size:12px;letter-spacing:.3px}
+header{position:sticky;top:0;z-index:10;background:#fff;border-bottom:1px solid var(--line)}
+.nav{max-width:1180px;margin:auto;padding:14px 20px;display:flex;align-items:center;gap:18px}
+.brand{display:flex;align-items:center;gap:10px;min-width:max-content}
+.logo{width:42px;height:42px;background:var(--red);color:#fff;border-radius:13px;display:grid;place-items:center;font-size:22px}
+.brand strong{display:block;font-size:18px;letter-spacing:-.4px}
+.brand small{color:var(--muted);font-size:11px}
+.search{flex:1;display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:0 12px;background:#fafafa}
+.search input{width:100%;border:0;outline:0;background:transparent;padding:12px 0;min-width:0}
+.cart-button{background:var(--red);color:white;border:0;border-radius:12px;padding:12px 15px;font-weight:700;white-space:nowrap}
+.hero{max-width:1180px;margin:22px auto 0;padding:0 20px}
+.hero-card{position:relative;overflow:hidden;border-radius:24px;min-height:330px;background:#33201a;display:flex;align-items:center}
+.hero-image{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.64}
+.hero-content{position:relative;color:white;padding:34px;max-width:600px}
+.pill{display:inline-block;background:#fff2df;color:#8a3b18;padding:7px 11px;border-radius:100px;font-size:12px;font-weight:800}
+.hero h1{font-size:clamp(34px,5vw,58px);line-height:1.02;margin:15px 0 12px;letter-spacing:-1.5px}
+.hero p{line-height:1.6;color:#fff3ec;max-width:470px}
+.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.primary,.secondary{border:0;border-radius:11px;padding:13px 17px;font-weight:800}
+.primary{background:var(--red);color:white}
+.secondary{background:white;color:#29211e}
+.info-row{display:flex;gap:18px;flex-wrap:wrap;margin-top:17px;color:#4d4845;font-size:13px}
+.info-row span{background:#fff;border:1px solid var(--line);padding:10px 12px;border-radius:12px}
+main{max-width:1180px;margin:auto;padding:0 20px 50px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:10px;margin:34px 0 16px}
+.section-head h2{margin:0;font-size:25px;letter-spacing:-.6px}
+.section-head p{margin:5px 0 0;color:var(--muted);font-size:13px}
+.categories{display:flex;gap:10px;overflow:auto;padding:3px 0 8px}
+.cat{border:1px solid var(--line);background:#fff;border-radius:100px;padding:10px 15px;white-space:nowrap;font-size:13px;font-weight:700}
+.cat.active,.cat:hover{background:#fff0ed;color:var(--red-dark);border-color:#ffc7bf}
+.offer-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.offer{border:1px dashed #ef9a8f;background:#fff7f4;border-radius:16px;padding:17px;display:flex;align-items:center;gap:12px}
+.offer-icon{font-size:27px}
+.offer strong{display:block;font-size:15px}
+.offer small{display:block;color:var(--muted);margin-top:5px;line-height:1.4}
+.copy-code{border:0;background:#ffe1dc;color:#a52d23;border-radius:8px;padding:7px 9px;font-weight:800;margin-left:auto}
+.food-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.food-card{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:#fff;transition:transform .15s,box-shadow .15s}
+.food-card:hover{transform:translateY(-3px);box-shadow:0 12px 30px #2a170d12}
+.food-photo{height:180px;position:relative;background:#f5eee8}
+.food-photo img{width:100%;height:100%;object-fit:cover;display:block}
+.tag{position:absolute;top:11px;left:11px;background:#fff;border-radius:7px;padding:6px 8px;font-size:11px;font-weight:800}
+.food-info{padding:14px}
+.food-title-row{display:flex;align-items:start;justify-content:space-between;gap:8px}
+.food-title-row h3{margin:0;font-size:16px;line-height:1.3}
+.rating{font-size:12px;background:#eaf7ed;color:#1d7740;border-radius:6px;padding:5px 6px;white-space:nowrap;font-weight:800}
+.desc{font-size:12px;color:var(--muted);line-height:1.45;min-height:34px;margin:8px 0}
+.price-row{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.price{font-weight:800;font-size:17px}
+.add{border:1px solid var(--red);color:var(--red);background:white;border-radius:9px;padding:8px 14px;font-weight:800}
+.add:hover{background:var(--red);color:#fff}
+.empty{grid-column:1/-1;padding:28px;text-align:center;border:1px dashed var(--line);border-radius:14px;color:var(--muted)}
+.content-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(290px,.8fr);gap:22px;align-items:start}
+.cart-panel{position:sticky;top:88px;border:1px solid var(--line);border-radius:18px;padding:18px;background:#fff}
+.cart-panel h2{margin:0 0 6px;font-size:22px}
+.subtle{color:var(--muted);font-size:12px;line-height:1.5}
+.cart-list{margin:14px 0}
+.cart-empty{background:#fffaf5;padding:22px 12px;border-radius:12px;text-align:center;color:var(--muted);font-size:13px}
+.cart-line{display:grid;grid-template-columns:1fr auto;gap:10px;padding:12px 0;border-bottom:1px solid var(--line)}
+.cart-line strong{font-size:13px}
+.cart-line small{display:block;color:var(--muted);margin-top:4px}
+.qty{display:flex;align-items:center;gap:9px}
+.qty button{border:1px solid var(--line);background:#fff;border-radius:7px;width:27px;height:27px;font-weight:800}
+.coupon-row{display:flex;gap:7px;margin:12px 0}
+.coupon-row input{min-width:0;width:100%;border:1px solid var(--line);border-radius:9px;padding:11px;text-transform:uppercase}
+.coupon-row button{border:0;border-radius:9px;background:#29211e;color:#fff;padding:0 12px;font-weight:800}
+.bill-row{display:flex;justify-content:space-between;gap:12px;padding:7px 0;font-size:13px}
+.bill-row.total{font-size:19px;font-weight:900;border-top:1px solid var(--line);padding-top:13px;margin-top:5px}
+.green{color:var(--green)}
+.delivery-form{margin-top:18px;border-top:1px solid var(--line);padding-top:15px}
+.delivery-form h3{font-size:15px;margin:0 0 10px}
+.delivery-form label{display:block;font-size:12px;font-weight:700;margin:10px 0 5px}
+.delivery-form input,.delivery-form textarea,.delivery-form select{width:100%;border:1px solid var(--line);border-radius:9px;padding:11px;outline-color:#f2a49b;background:#fff}
+.delivery-form textarea{resize:vertical;min-height:65px}
+.place-order{width:100%;margin-top:12px;border:0;border-radius:11px;background:var(--red);color:#fff;padding:14px;font-weight:900}
+.notice{font-size:11px;color:var(--muted);line-height:1.5;margin-top:10px}
+#status{font-size:13px;line-height:1.5;margin-top:10px}
+footer{background:#201b19;color:#fff;padding:28px 20px}
+.footer-inner{max-width:1180px;margin:auto;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+footer p{color:#d2c6c0;font-size:12px;line-height:1.6}
+@media(max-width:800px){.offer-grid{grid-template-columns:1fr}.food-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.content-grid{grid-template-columns:1fr}.cart-panel{position:static}.food-photo{height:150px}.hero-card{min-height:340px}.nav{gap:10px;padding:12px}.brand strong{font-size:15px}.brand small{font-size:10px}.cart-button{padding:11px}}
+@media(max-width:470px){.nav{flex-wrap:wrap}.brand{flex:1}.search{order:3;flex-basis:100%}.hero-content{padding:23px}.hero-card{border-radius:18px}.hero h1{font-size:38px}.food-grid{gap:10px}.food-photo{height:125px}.food-info{padding:10px}.food-title-row h3{font-size:14px}.desc{font-size:11px;min-height:43px}.price{font-size:15px}.add{padding:7px 10px}.section-head h2{font-size:22px}}
+</style>
+</head>
+<body>
+<div class="topbar">📍 Serving Talegaon Dabhade · Demo ordering website · Fresh cravings, delivered</div>
+<header>
+  <div class="nav">
+    <div class="brand"><div class="logo">☕</div><div><strong>Cafe D’Cruse</strong><small>COFFEE · BITES · MEALS</small></div></div>
+    <label class="search" aria-label="Search menu"><span>⌕</span><input id="search" type="search" placeholder="Search cold coffee, pizza, thali..." oninput="renderMenu()"></label>
+    <button class="cart-button" onclick="document.getElementById('cartPanel').scrollIntoView({behavior:'smooth'})">🛒 Cart <span id="cartCount">0</span></button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-card">
+    <img class="hero-image" src="https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=1800&q=85" alt="Fresh pizza on a table" onerror="this.style.display='none'">
+    <div class="hero-content">
+      <span class="pill">YOUR TASTY BREAK STARTS HERE</span>
+      <h1>Good food.<br>Good mood.</h1>
+      <p>From creamy cold coffee to cheesy pizza and comfort thalis — find your next favourite bite at Cafe D’Cruse.</p>
+      <div class="hero-actions"><button class="primary" onclick="document.getElementById('menuSection').scrollIntoView({behavior:'smooth'})">Explore menu ↓</button><button class="secondary" onclick="document.getElementById('offers').scrollIntoView({behavior:'smooth'})">View offers 🎁</button></div>
+    </div>
+  </div>
+  <div class="info-row"><span>⭐ <b>Demo menu</b> · sample prices</span><span>🛵 Talegaon delivery area</span><span>🥬 Veg-friendly choices</span></div>
+</section>
+
+<main>
+  <section id="offers">
+    <div class="section-head"><div><h2>Offers made for you 🎉</h2><p>Tap a code to copy it, then apply it in your cart.</p></div></div>
+    <div class="offer-grid">
+      <div class="offer"><div class="offer-icon">🏷️</div><div><strong>10% OFF</strong><small>On orders ₹299 or more</small></div><button class="copy-code" onclick="useCoupon('CRUSE10')">CRUSE10</button></div>
+      <div class="offer"><div class="offer-icon">💸</div><div><strong>₹50 OFF</strong><small>On orders ₹499 or more</small></div><button class="copy-code" onclick="useCoupon('TASTY50')">TASTY50</button></div>
+      <div class="offer"><div class="offer-icon">🛵</div><div><strong>Free delivery</strong><small>On food subtotal ₹399 or more</small></div><button class="copy-code" onclick="useCoupon('FREESHIP')">FREESHIP</button></div>
+    </div>
+  </section>
+
+  <section id="menuSection">
+    <div class="section-head"><div><h2>What are you craving?</h2><p>Made for your coffee breaks, hangouts and hungry evenings.</p></div></div>
+    <div class="categories" id="categories">
+      <button class="cat active" data-cat="All" onclick="setCategory('All',this)">🍽️ All items</button>
+      <button class="cat" data-cat="Coffee" onclick="setCategory('Coffee',this)">☕ Cold coffee</button>
+      <button class="cat" data-cat="Pizza" onclick="setCategory('Pizza',this)">🍕 Pizza</button>
+      <button class="cat" data-cat="Burger" onclick="setCategory('Burger',this)">🍔 Burgers & fries</button>
+      <button class="cat" data-cat="Drinks" onclick="setCategory('Drinks',this)">🥤 Drinks</button>
+      <button class="cat" data-cat="Thali" onclick="setCategory('Thali',this)">🍱 Thalis</button>
+      <button class="cat" data-cat="Sabzi" onclick="setCategory('Sabzi',this)">🍛 Bhaji & paneer</button>
+      <button class="cat" data-cat="Street" onclick="setCategory('Street',this)">🌶️ Street food</button>
+    </div>
+    <div class="section-head"><div><h2 id="menuTitle">Popular picks</h2><p>Sample prices in Indian rupees.</p></div></div>
+    <div class="content-grid">
+      <div class="food-grid" id="foodGrid"></div>
+      <aside class="cart-panel" id="cartPanel">
+        <h2>🛒 Your cart</h2><div class="subtle">Review your items before checkout.</div>
+        <div class="cart-list" id="cartList"><div class="cart-empty">Your cart is empty.<br>Add something delicious!</div></div>
+        <div class="coupon-row"><input id="couponInput" placeholder="Enter coupon code" aria-label="Coupon code"><button onclick="applyCoupon()">Apply</button></div>
+        <div id="couponMessage" class="subtle"></div>
+        <div class="bill-row"><span>Item subtotal</span><strong id="subtotal">₹0</strong></div>
+        <div class="bill-row"><span>Delivery fee</span><strong id="delivery">₹0</strong></div>
+        <div class="bill-row"><span>Discount</span><strong class="green" id="discount">−₹0</strong></div>
+        <div class="bill-row total"><span>Total</span><strong id="total">₹0</strong></div>
+        <div class="delivery-form">
+          <h3>🏠 Delivery details</h3>
+          <label for="customerName">Your name</label><input id="customerName" placeholder="Enter your name" autocomplete="name">
+          <label for="phone">Mobile number</label><input id="phone" type="tel" inputmode="numeric" placeholder="10-digit mobile number" maxlength="10">
+          <label for="address">Delivery address in Talegaon</label><textarea id="address" placeholder="Area, street, building, landmark"></textarea>
+          <label for="payment">Payment preference (demo)</label>
+          <select id="payment"><option value="Cash on delivery (demo)">Cash on delivery (demo)</option><option value="UPI (not connected)">UPI (not connected)</option></select>
+          <button class="place-order" onclick="placeOrder()">Place demo order →</button>
+          <div id="status" role="status"></div>
+          <div class="notice">Demo only: this website does not send orders to a restaurant, collect payments or confirm delivery. Contact the cafe directly before treating prices, coupons or delivery availability as real.</div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer><div class="footer-inner"><div><div class="brand"><div class="logo">☕</div><div><strong>Cafe D’Cruse</strong><small style="color:#d2c6c0">TALEGAON · DEMO WEBSITE</small></div></div><p>Good food, warm coffee, happy moments.</p></div><div><strong>Ordering info</strong><p>Location: Talegaon Dabhade<br>Delivery fees and sample offers shown above are illustrative.</p></div></div></footer>
+
+<script>
+const menu = [
+{id:1,name:"Classic Cold Coffee",cat:"Coffee",price:89,emoji:"☕",desc:"Chilled coffee, creamy and refreshing.",tag:"Bestseller",rating:"4.8",img:"https://images.unsplash.com/photo-1461023058943-07fcbe16d735?auto=format&fit=crop&w=700&q=80"},
+{id:2,name:"Chocolate Cold Coffee",cat:"Coffee",price:119,emoji:"🥤",desc:"Coffee blended with rich chocolate.",tag:"Choco love",rating:"4.7",img:"https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=700&q=80"},
+{id:3,name:"Cold Coffee with Ice Cream",cat:"Coffee",price:139,emoji:"🍨",desc:"Cold coffee topped with a scoop.",tag:"Fan favourite",rating:"4.9",img:"https://images.unsplash.com/photo-1517701604599-bb29b565090c?auto=format&fit=crop&w=700&q=80"},
+{id:4,name:"Hazelnut Style Cold Coffee",cat:"Coffee",price:129,emoji:"☕",desc:"A nutty-flavoured coffeehouse-style treat.",tag:"Cafe special",rating:"4.6",img:"https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=700&q=80"},
+{id:5,name:"Classic Margherita Pizza",cat:"Pizza",price:179,emoji:"🍕",desc:"Tomato, mozzarella and Italian herbs.",tag:"Cheesy",rating:"4.7",img:"https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=700&q=80"},
+{id:6,name:"Farm Fresh Veg Pizza",cat:"Pizza",price:229,emoji:"🍕",desc:"Capsicum, onion, corn and cheese.",tag:"Popular",rating:"4.6",img:"https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=700&q=80"},
+{id:7,name:"Paneer Tikka Pizza",cat:"Pizza",price:259,emoji:"🍕",desc:"Spiced paneer, veggies and cheese.",tag:"Paneer pick",rating:"4.8",img:"https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?auto=format&fit=crop&w=700&q=80"},
+{id:8,name:"Veg Cheese Burger",cat:"Burger",price:119,emoji:"🍔",desc:"Crispy veg patty, cheese and sauce.",tag:"Bestseller",rating:"4.5",img:"https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=700&q=80"},
+{id:9,name:"Paneer Tandoori Burger",cat:"Burger",price:159,emoji:"🍔",desc:"Tandoori-style paneer with crunchy lettuce.",tag:"Spicy",rating:"4.7",img:"https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=700&q=80"},
+{id:10,name:"Peri Peri Fries",cat:"Burger",price:89,emoji:"🍟",desc:"Golden fries with a spicy seasoning.",tag:"Snack time",rating:"4.4",img:"https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=700&q=80"},
+{id:11,name:"Chilled Coke",cat:"Drinks",price:40,emoji:"🥤",desc:"A chilled fizzy drink to go with your meal.",tag:"Chilled",rating:"4.4",img:"https://images.unsplash.com/photo-1554866585-cd94860890b7?auto=format&fit=crop&w=700&q=80"},
+{id:12,name:"Lemon Mint Cooler",cat:"Drinks",price:69,emoji:"🍋",desc:"A fresh citrus and mint-style cooler.",tag:"Refreshing",rating:"4.5",img:"https://images.unsplash.com/photo-1513558161293-cdaf765edfd7?auto=format&fit=crop&w=700&q=80"},
+{id:13,name:"Veg Mini Thali",cat:"Thali",price:149,emoji:"🍱",desc:"Roti, seasonal sabzi, rice and accompaniments.",tag:"Value meal",rating:"4.5",img:"https://images.unsplash.com/photo-1546833999-b9f581a1996d?auto=format&fit=crop&w=700&q=80"},
+{id:14,name:"Paneer Special Thali",cat:"Thali",price:219,emoji:"🍛",desc:"Paneer curry, roti, rice and sides.",tag:"Filling",rating:"4.8",img:"https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=700&q=80"},
+{id:15,name:"Paneer Butter Masala",cat:"Sabzi",price:189,emoji:"🍲",desc:"Paneer in a rich, creamy tomato gravy.",tag:"Classic",rating:"4.8",img:"https://images.unsplash.com/photo-1631452180519-c014fe946bc7?auto=format&fit=crop&w=700&q=80"},
+{id:16,name:"Mix Veg Sabzi",cat:"Sabzi",price:139,emoji:"🥘",desc:"Seasonal vegetables in homestyle masala.",tag:"Homestyle",rating:"4.4",img:"https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=700&q=80"},
+{id:17,name:"Pani Puri (6 pcs)",cat:"Street",price:49,emoji:"🌶️",desc:"Crispy puris with tangy pani (sample listing).",tag:"Street favourite",rating:"4.6",img:"https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=700&q=80"},
+{id:18,name:"Dahi Puri (6 pcs)",cat:"Street",price:69,emoji:"🥣",desc:"Crunchy puris with yogurt and chutneys.",tag:"Tangy",rating:"4.5",img:"https://images.unsplash.com/photo-1606491956689-2ea866880c84?auto=format&fit=crop&w=700&q=80"}
+];
+let category="All", cart={}, appliedCoupon="";
+function money(n){return "₹"+Math.round(n);}
+function setCategory(cat,button){category=cat;document.querySelectorAll(".cat").forEach(b=>b.classList.toggle("active",b===button));document.getElementById("menuTitle").textContent=cat==="All"?"Popular picks":cat+" menu";renderMenu();}
+function renderMenu(){
+ const q=document.getElementById("search").value.trim().toLowerCase();
+ const list=menu.filter(x=>(category==="All"||x.cat===category)&&(x.name.toLowerCase().includes(q)||x.desc.toLowerCase().includes(q)||x.cat.toLowerCase().includes(q)));
+ document.getElementById("foodGrid").innerHTML=list.length?list.map(x=>`<article class="food-card"><div class="food-photo"><img src="${x.img}" alt="${x.name}" loading="lazy" onerror="this.style.display='none';this.parentElement.style.background='#f8e7df';this.parentElement.innerHTML+='<div style=&quot;display:grid;place-items:center;height:100%;font-size:55px&quot;>${x.emoji}</div>'"><span class="tag">${x.tag}</span></div><div class="food-info"><div class="food-title-row"><h3>${x.name}</h3><span class="rating">★ ${x.rating}</span></div><p class="desc">${x.desc}</p><div class="price-row"><span class="price">${money(x.price)}</span><button class="add" onclick="addItem(${x.id})">ADD +</button></div></div></article>`).join(""):'<div class="empty">No items found. Try another search.</div>';
+}
+function addItem(id){cart[id]=(cart[id]||0)+1;renderCart();}
+function changeQty(id,n){cart[id]=(cart[id]||0)+n;if(cart[id]<=0)delete cart[id];renderCart();}
+function calc(){
+ const subtotal=Object.entries(cart).reduce((s,[id,q])=>s+menu.find(x=>x.id===Number(id)).price*q,0);
+ let delivery=subtotal===0?0:(subtotal>=399?0:30),discount=0;
+ if(appliedCoupon==="CRUSE10"&&subtotal>=299)discount=Math.round(subtotal*.10);
+ if(appliedCoupon==="TASTY50"&&subtotal>=499)discount=50;
+ if(appliedCoupon==="FREESHIP"&&subtotal>=399)delivery=0;
+ return {subtotal,delivery,discount,total:Math.max(0,subtotal+delivery-discount)};
+}
+function renderCart(){
+ const entries=Object.entries(cart);
+ document.getElementById("cartCount").textContent=entries.reduce((s,[,q])=>s+q,0);
+ document.getElementById("cartList").innerHTML=entries.length?entries.map(([id,q])=>{const x=menu.find(y=>y.id===Number(id));return `<div class="cart-line"><div><strong>${x.emoji} ${x.name}</strong><small>${money(x.price)} each · ${money(x.price*q)}</small></div><div class="qty"><button onclick="changeQty(${id},-1)">−</button><span>${q}</span><button onclick="changeQty(${id},1)">+</button></div></div>`}).join(""):'<div class="cart-empty">Your cart is empty.<br>Add something delicious!</div>';
+ const b=calc();
+ document.getElementById("subtotal").textContent=money(b.subtotal);
+ document.getElementById("delivery").textContent=money(b.delivery);
+ document.getElementById("discount").textContent="−"+money(b.discount);
+ document.getElementById("total").textContent=money(b.total);
+ if(appliedCoupon){document.getElementById("couponMessage").textContent="Applied: "+appliedCoupon+" (eligibility depends on subtotal).";}else{document.getElementById("couponMessage").textContent="Try CRUSE10, TASTY50 or FREESHIP.";}
+}
+function useCoupon(code){document.getElementById("couponInput").value=code;document.getElementById("cartPanel").scrollIntoView({behavior:"smooth"});applyCoupon();}
+function applyCoupon(){
+ const code=document.getElementById("couponInput").value.trim().toUpperCase();
+ const allowed=["CRUSE10","TASTY50","FREESHIP"];
+ if(!allowed.includes(code)){appliedCoupon="";document.getElementById("couponMessage").textContent="Invalid code. Try CRUSE10, TASTY50 or FREESHIP.";renderCart();return;}
+ const b=calc();
+ if(code==="CRUSE10"&&b.subtotal<299){document.getElementById("couponMessage").textContent="Add items worth ₹299 to use CRUSE10.";return;}
+ if(code==="TASTY50"&&b.subtotal<499){document.getElementById("couponMessage").textContent="Add items worth ₹499 to use TASTY50.";return;}
+ if(code==="FREESHIP"&&b.subtotal<399){document.getElementById("couponMessage").textContent="Add items worth ₹399 to use FREESHIP.";return;}
+ appliedCoupon=code;renderCart();document.getElementById("couponMessage").textContent="Coupon "+code+" applied!";
+}
+function placeOrder(){
+ const status=document.getElementById("status"),name=document.getElementById("customerName").value.trim(),phone=document.getElementById("phone").value.trim(),address=document.getElementById("address").value.trim();
+ if(!Object.keys(cart).length){status.style.color="#c93329";status.textContent="Please add at least one food item first.";return;}
+ if(name.length<2){status.style.color="#c93329";status.textContent="Please enter your name.";document.getElementById("customerName").focus();return;}
+ if(!/^[0-9]{10}$/.test(phone)){status.style.color="#c93329";status.textContent="Enter a valid 10-digit mobile number.";document.getElementById("phone").focus();return;}
+ if(address.length<8){status.style.color="#c93329";status.textContent="Please enter your complete Talegaon delivery address.";document.getElementById("address").focus();return;}
+ const b=calc(),items=Object.entries(cart).map(([id,q])=>menu.find(x=>x.id===Number(id)).name+" × "+q).join(", ");
+ status.style.color="#16834a";
+ status.innerHTML="<strong>Demo order summary prepared!</strong><br>"+items+"<br>Total: "+money(b.total)+"<br>Delivery address: "+address+"<br><span style='color:#707070'>No order was sent to a restaurant. Connect a backend or official order channel to accept real orders.</span>";
+}
+renderMenu();renderCart();
+</script>
+</body>
+</html>
