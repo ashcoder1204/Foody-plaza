@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zomato Mini</title>
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; font-family: Arial, sans-serif; background: #f8f8f8; color: #222; }
+header { background: #e23744; color: white; padding: 20px 16px; }
+header h1 { margin: 0 0 8px; }
+header p { margin: 0; }
+main { max-width: 900px; margin: auto; padding: 16px; }
+input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 10px; font-size: 16px; margin: 8px 0 20px; }
+h2 { margin-top: 16px; }
+.foods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.food { background: white; border-radius: 12px; padding: 12px; box-shadow: 0 2px 8px #00000010; }
+.food .emoji { font-size: 42px; }
+.food h3 { margin: 8px 0; }
+.food p { color: #666; font-size: 14px; }
+.food button, .checkout { background: #e23744; color: white; border: 0; border-radius: 8px; padding: 11px; cursor: pointer; font-size: 15px; }
+.food button { width: 100%; }
+.cart { background: white; padding: 16px; margin-top: 24px; border-radius: 12px; }
+.cart-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 0; border-bottom: 1px solid #eee; }
+.cart-row button { padding: 5px 9px; margin-left: 4px; }
+.total { font-size: 20px; font-weight: bold; }
+.checkout { width: 100%; margin-top: 12px; }
+@media (min-width: 650px) { .foods { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+</style>
+</head>
+<body>
+<header><h1>🍴 Zomato Mini</h1><p>Your favourite food, delivered!</p></header>
+<main>
+  <h2>Find your food 🔎</h2>
+  <input id="search" type="search" placeholder="Search pizza, burger, dosa..." oninput="renderFoods()">
+  <h2>Popular Food Items</h2>
+  <div class="foods" id="foods"></div>
+  <section class="cart">
+    <h2>🛒 Your Cart</h2>
+    <div id="cartItems">Your cart is empty.</div>
+    <p>Subtotal: ₹<span id="subtotal">0</span></p>
+    <p>Delivery: ₹<span id="delivery">0</span></p>
+    <p class="total">Total: ₹<span id="total">0</span></p>
+    <button class="checkout" onclick="checkout()">Place Demo Order</button>
+    <p id="message"></p>
+  </section>
+</main>
+<script>
+const menu = [
+  {id: 1, name: "Margherita Pizza", price: 199, emoji: "🍕"},
+  {id: 2, name: "Cheese Burger", price: 149, emoji: "🍔"},
+  {id: 3, name: "Masala Dosa", price: 99, emoji: "🥞"},
+  {id: 4, name: "Veg Biryani", price: 179, emoji: "🍛"},
+  {id: 5, name: "French Fries", price: 89, emoji: "🍟"},
+  {id: 6, name: "Chocolate Cake", price: 129, emoji: "🍰"}
+];
+let cart = {};
+function renderFoods() {
+  const query = document.getElementById("search").value.toLowerCase().trim();
+  const filtered = menu.filter(food => food.name.toLowerCase().includes(query));
+  document.getElementById("foods").innerHTML = filtered.length ? filtered.map(food => `
+    <article class="food">
+      <div class="emoji">${food.emoji}</div>
+      <h3>${food.name}</h3>
+      <p>Fresh and delicious</p>
+      <p><b>₹${food.price}</b></p>
+      <button onclick="addToCart(${food.id})">Add to Cart</button>
+    </article>`).join("") : "<p>No food found.</p>";
+}
+function addToCart(id) { cart[id] = (cart[id] || 0) + 1; renderCart(); }
+function changeQty(id, amount) {
+  cart[id] = (cart[id] || 0) + amount;
+  if (cart[id] <= 0) delete cart[id];
+  renderCart();
+}
+function renderCart() {
+  const entries = Object.entries(cart);
+  const container = document.getElementById("cartItems");
+  if (entries.length === 0) {
+    container.innerHTML = "Your cart is empty.";
+  } else {
+    container.innerHTML = entries.map(([id, qty]) => {
+      const food = menu.find(item => item.id === Number(id));
+      return `<div class="cart-row"><div>${food.emoji} ${food.name}<br>₹${food.price} × ${qty}</div>
+      <div><button onclick="changeQty(${id}, -1)">−</button> ${qty} <button onclick="changeQty(${id}, 1)">+</button></div></div>`;
+    }).join("");
+  }
+  const subtotal = entries.reduce((sum, [id, qty]) => {
+    const food = menu.find(item => item.id === Number(id));
+    return sum + food.price * qty;
+  }, 0);
+  const delivery = subtotal > 0 ? 30 : 0;
+  document.getElementById("subtotal").textContent = subtotal;
+  document.getElementById("delivery").textContent = delivery;
+  document.getElementById("total").textContent = subtotal + delivery;
+  document.getElementById("message").textContent = "";
+}
+function checkout() {
+  if (Object.keys(cart).length === 0) {
+    document.getElementById("message").textContent = "Please add food to your cart first.";
+    return;
+  }
+  document.getElementById("message").textContent = "Demo order successful! This is not a real order.";
+}
+renderFoods();
+renderCart();
+</script>
+</body>
+</html>
